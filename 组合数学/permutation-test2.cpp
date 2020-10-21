@@ -148,9 +148,9 @@ void permutation_dictorder(vector<int>& v,int k){
     }
     */
     // 计算第k个的中介数
-    print_vector(intermediary);
+    // print_vector(intermediary);
     calculate_increase_number(intermediary,k,true);
-    print_vector(intermediary);
+    // print_vector(intermediary);
     // 由中介数找到排列
     vector<bool> vis(v.size()+1,true);
     for(int i=0;i<v.size()-1;i++){
@@ -182,6 +182,7 @@ void permutation_increase(vector<int>& v,int k,bool increase=true){
         for(int j=i+1;j<n;j++){
             if(v[i]>v[j])c++;
         }
+        assert(n-v[i]<n-1);
         intermediary[n-v[i]] = c;
     }
     if(!increase){
@@ -189,9 +190,9 @@ void permutation_increase(vector<int>& v,int k,bool increase=true){
             swap(intermediary[i],intermediary[n-2-i]);
     }
     // 计算k的中介数
-    print_vector(intermediary);
+    // print_vector(intermediary);
     calculate_increase_number(intermediary,k,increase);
-    print_vector(intermediary);
+    // print_vector(intermediary);
     // 由中介数找到排列
     if(!increase){
         for(int i=0;2*i<n-1;i++)
@@ -234,9 +235,9 @@ void permutation_ringing(vector<int>& v,int k){
         intermediary[b-2]=c;
     }
     // 计算第k个的中介数
-    print_vector(intermediary);
+    // print_vector(intermediary);
     calculate_increase_number(intermediary,k,false);
-    print_vector(intermediary);
+    // print_vector(intermediary);
     // 由中介数找到箭头方向和排列
     vector<bool> vis(n,true);//表示该位置没有元素
     for(int b=n;b>=2;b--){
@@ -262,32 +263,50 @@ void permutation_ringing(vector<int>& v,int k){
 }
 
 int main(){
-    freopen("in.txt","r",stdin);
-    int n,k;
-    scanf("%d",&n);
+    int n=8;
     vector<int> v(n);
-    for(int i=0;i<n;i++)
-        scanf("%d",&v[i]);
-    scanf("%d",&k); //第k个数字
+    
+    int cnt=1;
+    clock_t start,finish;
+    for(int i=1;i<=n;i++)cnt*=i;
     printf("字典序法\n");
+    for(int i=0;i<n;i++)v[i]=i+1;
     print_vector(v);
-    permutation_dictorder(v,k);
+    start = clock();
+    for(int i=0;i<cnt-1;i++)
+        permutation_dictorder(v,1);
+    finish = clock();
+    printf("运行时间：%.2f\n",1000*(float)(finish-start)/CLOCKS_PER_SEC);
     print_vector(v);
-    permutation_dictorder(v,-k);
     printf("递增进位制法\n");
+    for(int i=0;i<n;i++)v[i]=i+1;
     print_vector(v);
-    permutation_increase(v,k);
+    start = clock();
+    for(int i=0;i<cnt-1;i++){
+        permutation_increase(v,1);
+    }
+        
+        
+    finish = clock();
     print_vector(v);
-    permutation_increase(v,-k);
+    printf("运行时间：%.2f\n",1000*(float)(finish-start)/CLOCKS_PER_SEC);
     printf("递减进位制法\n");
+    for(int i=0;i<n;i++)v[i]=i+1;
     print_vector(v);
-    permutation_increase(v,k,false);
+    start = clock();
+    for(int i=0;i<cnt-1;i++)
+        permutation_increase(v,1,false);
+    finish = clock();
     print_vector(v);
-    permutation_increase(v,-k,false);
+    printf("运行时间：%.2f\n",1000*(float)(finish-start)/CLOCKS_PER_SEC);
     printf("邻位对换法\n");
+    for(int i=0;i<n;i++)v[i]=i+1;
     print_vector(v);
-    permutation_ringing(v,k);
+    start = clock();
+    for(int i=0;i<cnt-1;i++)
+        permutation_ringing(v,1);
+    finish = clock();
     print_vector(v);
-    permutation_ringing(v,-k);
+    printf("运行时间：%.2f\n",1000*(float)(finish-start)/CLOCKS_PER_SEC);
     return 0;
 }
