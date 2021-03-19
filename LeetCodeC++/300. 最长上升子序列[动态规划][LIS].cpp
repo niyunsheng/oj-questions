@@ -22,3 +22,23 @@
          return m;
      }
  };
+
+//// 上述算法是O(n*n)的， 用dp[i]表示以数组中第i个元素结尾的最长子序列的长度
+//// 下面的算法是O(n*logn)的，用dp[i]表示最长子序列长度为i的序列的最后一个数字的最小值
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int> dp(nums.size(),0);
+        int maxlength = 1;
+        dp[0] = nums[0];
+        for(int i=1;i<nums.size();i++){
+            cout << nums[i];
+            auto tmp = lower_bound(dp.begin(),dp.begin()+maxlength,nums[i]);
+            *tmp = nums[i];
+            if(tmp == (dp.begin()+maxlength))
+                maxlength+=1;
+        }
+        return maxlength;
+    }
+};
